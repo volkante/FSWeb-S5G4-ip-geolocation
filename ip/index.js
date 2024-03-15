@@ -1,26 +1,24 @@
 //axios import buraya gelecek
-
+import axios from "axios";
 var benimIP;
-
 
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
 require("babel-polyfill");
-async function ipAdresimiAl(){
-	await axios({
-		method: 'get',
-		url: 'https://apis.ergineer.com/ipadresim',
-	})
-	.then(function (response) {
-		return response.data
-	})
-	.then(function (a) {
-		benimIP=a
-	});
-}				
+async function ipAdresimiAl() {
+  await axios({
+    method: "get",
+    url: "https://apis.ergineer.com/ipadresim",
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      benimIP = a;
+    });
+}
 // ------------ değiştirmeyin --------------
-
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
@@ -34,8 +32,8 @@ async function ipAdresimiAl(){
 /*
 	ADIM 2: Geri döndürülen verileri inceleyin, bu sizin ip bilgileriniz! Bileşen fonksiyonunuzu geliştirmek içindeki bu veri yapısını
 	iyice anlamanız gerekmektedir.
-	
 */
+
 /*
 	ADIM 3: Argümanı sadece 1 nesne kabül eden bir fonksiyon oluşturun.
     DOM metotlarını ve özelliklerini kullanarak, şunları gerçekleştirin:
@@ -67,6 +65,64 @@ async function ipAdresimiAl(){
 	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
 */
 
-
-
 //kodlar buraya gelecek
+//adım 1-2
+let myUrl = "https://apis.ergineer.com/ipgeoapi/78.177.167.136";
+axios.get(myUrl).then((response) => {
+  console.log(response);
+});
+
+//adım 3
+
+function ipCardCreator(obj) {
+  const cardDiv = document.createElement("div");
+  cardDiv.classList.add("card");
+
+  const flagImg = document.createElement("img");
+  flagImg.setAttribute("src", obj.data.ülkebayrağı);
+  cardDiv.appendChild(flagImg);
+
+  const cardInfoDiv = document.createElement("div");
+  cardInfoDiv.classList.add("card-info");
+  cardDiv.appendChild(cardInfoDiv);
+
+  const h3 = document.createElement("h3");
+  h3.classList.add("ip");
+  h3.textContent = obj.data.sorgu;
+  cardInfoDiv.appendChild(h3);
+
+  const countryP = document.createElement("p");
+  countryP.classList.add("ulke");
+  countryP.textContent = `${obj.data.ülke} (${obj.data.ülkeKodu})`;
+  cardInfoDiv.appendChild(countryP);
+
+  const enlemP = document.createElement("p");
+  enlemP.textContent = `Enlem: ${obj.data.enlem} Boylam: ${obj.data.boylam}`;
+  cardInfoDiv.appendChild(enlemP);
+
+  const cityP = document.createElement("p");
+  cityP.textContent = obj.data.şehir;
+  cardInfoDiv.appendChild(cityP);
+
+  const timeZoneP = document.createElement("p");
+  timeZoneP.textContent = obj.data.saatdilimi;
+  cardInfoDiv.appendChild(timeZoneP);
+
+  const currencyP = document.createElement("p");
+  currencyP.textContent = obj.data.parabirimi;
+  cardInfoDiv.appendChild(currencyP);
+
+  const ispP = document.createElement("p");
+  ispP.textContent = obj.data.isp;
+  cardInfoDiv.appendChild(ispP);
+
+  return cardDiv;
+}
+
+axios.get(myUrl).then((response) => {
+  document.querySelector(".cards").appendChild(ipCardCreator(response));
+});
+
+async function getData() {
+  const ipadresim = await ipAdresimiAl();
+}
